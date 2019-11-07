@@ -4,7 +4,7 @@
 <xsl:variable name="vLower" select="'abcdefghijklmnopqrstuvwxyz'"/>
 <xsl:variable name="vUpper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 <xsl:template match="table">
-package kr.or.nemc.epn.com.crud;
+package com.crud;
 
 import java.io.Serializable;
 import java.util.*;
@@ -27,8 +27,12 @@ public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO impl
 </xsl:for-each>
 
 <xsl:if test='count(columns/column[@primarykey]) > 1'>
-	class PK implements Serializable {<xsl:for-each select="columns/column[@primarykey]">
-		public <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;</xsl:for-each>	
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Getter
+	@Setter
+	public static class PK implements Serializable {<xsl:for-each select="columns/column[@primarykey]">
+		private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;</xsl:for-each>	
 	}
 </xsl:if>
 }

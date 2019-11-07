@@ -250,6 +250,7 @@ public class CodegenPostgreSQL {
 			return "Integer";
 		case Types.DECIMAL:
 		case Types.NUMERIC:
+		case Types.BIGINT:
 			if (s == 0 && len < 8) {
 				return "Integer";
 			} else if (s == 0) {
@@ -272,6 +273,7 @@ public class CodegenPostgreSQL {
 		case Types.SMALLINT:
 		case Types.DECIMAL:
 		case Types.NUMERIC:
+		case Types.BIGINT:
 			return "number(" + len + (s == 0 ? ")" : "." + s + ")");
 		case Types.VARCHAR:
 			return "varchar(" + len + ")";
