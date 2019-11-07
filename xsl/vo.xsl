@@ -14,6 +14,7 @@ import lombok.*;
 <xsl:if test='count(columns/column[@primarykey]) > 1'>@IdClass(<xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO.PK.class)</xsl:if>
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "<xsl:value-of select='@name'/>")
 public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO implements Serializable {
@@ -31,6 +32,7 @@ public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO impl
 	@AllArgsConstructor
 	@Getter
 	@Setter
+	@ToString
 	public static class PK implements Serializable {<xsl:for-each select="columns/column[@primarykey]">
 		private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;</xsl:for-each>	
 	}
