@@ -7,6 +7,7 @@
 package com.crud;
 
 import java.io.Serializable;
+import org.hibernate.annotations.DynamicUpdate;
 import java.util.*;
 import javax.persistence.*;
 import lombok.*;
@@ -16,6 +17,7 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
+@DynamicUpdate
 @Table(name = "<xsl:value-of select='@name'/>")
 public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO {
 <xsl:for-each select="columns/column[@primarykey]">
