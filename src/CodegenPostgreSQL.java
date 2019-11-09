@@ -177,6 +177,9 @@ public class CodegenPostgreSQL {
 				if (columnName.equals("enterid") || columnName.equals("entername") || columnName.equals("enterpgm")) {
 					buf.append(" update=\"none\"");
 				}
+				if (columnName.equals("updateid") || columnName.equals("updatename") || columnName.equals("updatepgm")) {
+					buf.append(" insert=\"none\"");
+				}
 				// 입력일, 수정일에 대한 별도 처리
 				if (columnName.equals("enterdate")) {
 					buf.append(" insert=\"now()\" update=\"none\"");

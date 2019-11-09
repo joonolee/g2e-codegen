@@ -4,10 +4,11 @@
 <xsl:variable name="vLower" select="'abcdefghijklmnopqrstuvwxyz'"/>
 <xsl:variable name="vUpper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 <xsl:template match="table">
-package com.crud;
+package kr.or.nemc.epn.com.crud;
 
 import java.io.Serializable;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.math.*;
 import java.util.*;
 import javax.persistence.*;
@@ -22,11 +23,15 @@ import lombok.*;
 @Table(name = "<xsl:value-of select='@name'/>")
 public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO {
 <xsl:for-each select="columns/column[@primarykey]">
+	<xsl:if test="@type='Date'">
+	@DateTimeFormat(pattern = "yyyy-MM-dd")</xsl:if>
 	@Id
 	private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;
 </xsl:for-each>
 <xsl:for-each select="columns/column[not(@primarykey)]">
-	@Column
+	<xsl:if test="@type='Date'">
+	@DateTimeFormat(pattern = "yyyy-MM-dd")</xsl:if>
+	@Column<xsl:if test="@insert='none'">(insertable = false)</xsl:if><xsl:if test="@update='none'">(updatable = false)</xsl:if>
 	private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;
 </xsl:for-each>
 

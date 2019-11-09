@@ -177,6 +177,9 @@ public class CodegenMySQL {
 				if (columnName.equals("ENTERID") || columnName.equals("ENTERNAME") || columnName.equals("ENTERPGM")) {
 					buf.append(" update=\"none\"");
 				}
+				if (columnName.equals("UPDATEID") || columnName.equals("UPDATENAME") || columnName.equals("UPDATEPGM")) {
+					buf.append(" insert=\"none\"");
+				}
 				// 입력일, 수정일에 대한 별도 처리
 				if (columnName.equals("ENTERDATE")) {
 					buf.append(" insert=\"now()\" update=\"none\"");
