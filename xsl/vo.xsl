@@ -4,7 +4,7 @@
 <xsl:variable name="vLower" select="'abcdefghijklmnopqrstuvwxyz'"/>
 <xsl:variable name="vUpper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 <xsl:template match="table">
-package kr.or.nemc.epn.com.crud;
+package com.crud;
 
 import java.io.Serializable;
 import org.hibernate.annotations.DynamicUpdate;
