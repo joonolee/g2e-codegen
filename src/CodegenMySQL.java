@@ -171,8 +171,12 @@ public class CodegenMySQL {
 				buf.append("\" type=\"");
 				buf.append(_getJavaType(rsmd.getColumnType(i), rsmd.getPrecision(i), rsmd.getScale(i)));
 				buf.append("\" dbType=\"");
-				buf.append(_getDBType(rsmd.getColumnType(i), rsmd.getPrecision(i), rsmd.getScale(i)));
-				buf.append("\" desc=\"\" notnull=\"");
+				buf.append(_getDBType(rsmd.getColumnType(i)));
+				buf.append("\" dbPrecision=\"");
+				buf.append(rsmd.getPrecision(i));
+				buf.append("\" dbScale=\"");
+				buf.append(rsmd.getScale(i));
+				buf.append("\" notnull=\"");
 				buf.append((rsmd.isNullable(i) == 0 ? "true" : "false") + "\"");
 				if (columnName.equals("ENTERID") || columnName.equals("ENTERNAME") || columnName.equals("ENTERPGM")) {
 					buf.append(" update=\"none\"");
@@ -269,23 +273,23 @@ public class CodegenMySQL {
 		}
 	}
 
-	private static String _getDBType(int type, int len, int s) {
+	private static String _getDBType(int type) {
 		switch (type) {
 		case Types.INTEGER:
 		case Types.SMALLINT:
 		case Types.DECIMAL:
 		case Types.NUMERIC:
-			return "number(" + len + (s == 0 ? ")" : "." + s + ")");
+			return "number";
 		case Types.VARCHAR:
-			return "varchar(" + len + ")";
+			return "varchar";
 		case Types.CHAR:
-			return "char(" + len + ")";
+			return "char";
 		case Types.TIME:
 		case Types.TIMESTAMP:
 		case Types.DATE:
 			return "date";
 		default:
-			return String.valueOf(type);
+			return "varchar";
 		}
 	}
 }
