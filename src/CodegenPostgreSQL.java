@@ -211,7 +211,7 @@ public class CodegenPostgreSQL {
 				fw.close();
 			}
 		}
-		System.out.println(_filePath + "/" + tbName.toUpperCase() + ".xml created! ");
+		System.out.println(tbName.toUpperCase() + " created!");
 		String cmd = "";
 		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 			cmd = "run.bat " + tbName.toUpperCase();

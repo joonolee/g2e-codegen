@@ -211,7 +211,7 @@ public class CodegenMySQL {
 				fw.close();
 			}
 		}
-		System.out.println(_filePath + "/" + tbName + ".xml created! ");
+		System.out.println(tbName + " created!");
 		String cmd = "";
 		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
 			cmd = "run.bat " + tbName;
