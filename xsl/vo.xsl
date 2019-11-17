@@ -3,8 +3,7 @@
 <xsl:output method="text" encoding="UTF-8" />
 <xsl:variable name="vLower" select="'abcdefghijklmnopqrstuvwxyz'"/>
 <xsl:variable name="vUpper" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
-<xsl:template match="table">
-package com.crud;
+<xsl:template match="table">package com.crud;
 
 import java.io.Serializable;
 import java.math.*;
@@ -41,6 +40,5 @@ public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO {
 		private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;</xsl:for-each>	
 	}
 </xsl:if>
-}
-</xsl:template>
+}</xsl:template>
 </xsl:stylesheet>
