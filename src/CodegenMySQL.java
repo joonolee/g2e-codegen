@@ -97,7 +97,7 @@ public class CodegenMySQL {
 			System.out.println("JDBC Driver 로딩...");
 			System.out.println("=== 전체 테이블 목록에서 파일 생성 START ===");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select table_name from information_schema.tables");
+			rs = stmt.executeQuery("select table_name from information_schema.tables where table_schema = database()");
 			while (rs.next()) {
 				Statement stmt2 = null;
 				ResultSet rs2 = null;
@@ -153,7 +153,7 @@ public class CodegenMySQL {
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			File file = new File(_filePath, tbName + ".xml");
+			File file = new File(_filePath, tbName.toUpperCase() + ".xml");
 			if (file.exists()) {
 				file.delete();
 			}
@@ -211,12 +211,12 @@ public class CodegenMySQL {
 				fw.close();
 			}
 		}
-		System.out.println(tbName + " created!");
+		System.out.println(tbName.toUpperCase() + " created!");
 		String cmd = "";
 		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
-			cmd = "run.bat " + tbName;
+			cmd = "run.bat " + tbName.toUpperCase();
 		} else {
-			cmd = "./run.sh " + tbName;
+			cmd = "./run.sh " + tbName.toUpperCase();
 		}
 		Process p = Runtime.getRuntime().exec(cmd);
 		p.waitFor();
@@ -257,6 +257,7 @@ public class CodegenMySQL {
 			return "Integer";
 		case Types.DECIMAL:
 		case Types.NUMERIC:
+		case Types.BIGINT:
 			if (s == 0 && len < 8) {
 				return "Integer";
 			} else if (s == 0) {
@@ -279,6 +280,7 @@ public class CodegenMySQL {
 		case Types.SMALLINT:
 		case Types.DECIMAL:
 		case Types.NUMERIC:
+		case Types.BIGINT:
 			return "number";
 		case Types.VARCHAR:
 			return "varchar";
