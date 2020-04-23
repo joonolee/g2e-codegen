@@ -165,7 +165,7 @@ public class CodegenMySQL {
 			bw.write("  <columns>\n");
 			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 				StringBuffer buf = new StringBuffer();
-				String columnName = rsmd.getColumnName(i).toUpperCase();
+				String columnName = rsmd.getColumnName(i);
 				buf.append("    <column name=\"");
 				buf.append(columnName);
 				buf.append("\" type=\"");
@@ -178,17 +178,19 @@ public class CodegenMySQL {
 				buf.append(rsmd.getScale(i));
 				buf.append("\" notnull=\"");
 				buf.append((rsmd.isNullable(i) == 0 ? "true" : "false") + "\"");
-				if (columnName.equals("ENTERID") || columnName.equals("ENTERNAME") || columnName.equals("ENTERPGM")) {
+				if (columnName.equals("enterid") || columnName.equals("entername") || columnName.equals("enterpgm")
+					|| columnName.equals("reg_id") || columnName.equals("reg_nm") || columnName.equals("reg_pgm")) {
 					buf.append(" update=\"none\"");
 				}
-				if (columnName.equals("UPDATEID") || columnName.equals("UPDATENAME") || columnName.equals("UPDATEPGM")) {
+				if (columnName.equals("updateid") || columnName.equals("updatename") || columnName.equals("updatepgm")
+					|| columnName.equals("upd_id") || columnName.equals("upd_nm") || columnName.equals("upd_pgm")) {
 					buf.append(" insert=\"none\"");
 				}
 				// 입력일, 수정일에 대한 별도 처리
-				if (columnName.equals("ENTERDATE")) {
+				if (columnName.equals("enterdate") || columnName.equals("reg_dttm")) {
 					buf.append(" insert=\"now()\" update=\"none\"");
 				}
-				if (columnName.equals("UPDATEDATE")) {
+				if (columnName.equals("updatedate") || columnName.equals("upd_dttm")) {
 					buf.append(" insert=\"none\" update=\"now()\"");
 				}
 				if (pkList.contains(columnName)) {
