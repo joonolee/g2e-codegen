@@ -239,7 +239,7 @@ public class CodegenMySQL {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query.toString());
 			while (rs.next()) {
-				pkList.add(rs.getString("COLUMN_NAME").toUpperCase());
+				pkList.add(rs.getString("COLUMN_NAME"));
 			}
 		} finally {
 			if (rs != null) {

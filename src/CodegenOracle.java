@@ -153,7 +153,7 @@ public class CodegenOracle {
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			File file = new File(_filePath, tbName + ".xml");
+			File file = new File(_filePath, tbName.toUpperCase() + ".xml");
 			if (file.exists()) {
 				file.delete();
 			}
@@ -213,12 +213,12 @@ public class CodegenOracle {
 				fw.close();
 			}
 		}
-		System.out.println(tbName + " created!");
+		System.out.println(tbName.toUpperCase() + " created!");
 		String cmd = "";
 		if (System.getProperty("os.name").toLowerCase().startsWith("win")) {
-			cmd = "run.bat " + tbName;
+			cmd = "run.bat " + tbName.toUpperCase();
 		} else {
-			cmd = "./run.sh " + tbName;
+			cmd = "./run.sh " + tbName.toUpperCase();
 		}
 		Process p = Runtime.getRuntime().exec(cmd);
 		p.waitFor();
@@ -240,7 +240,7 @@ public class CodegenOracle {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query.toString());
 			while (rs.next()) {
-				pkList.add(rs.getString("COLUMN_NAME").toUpperCase());
+				pkList.add(rs.getString("COLUMN_NAME"));
 			}
 		} finally {
 			if (rs != null) {
