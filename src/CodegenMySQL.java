@@ -179,11 +179,11 @@ public class CodegenMySQL {
 				buf.append("\" notnull=\"");
 				buf.append((rsmd.isNullable(i) == 0 ? "true" : "false") + "\"");
 				if (columnName.equals("enterid") || columnName.equals("entername") || columnName.equals("enterpgm")
-					|| columnName.equals("reg_id") || columnName.equals("reg_nm") || columnName.equals("reg_pgm")) {
+						|| columnName.equals("reg_id") || columnName.equals("reg_nm") || columnName.equals("reg_pgm")) {
 					buf.append(" update=\"none\"");
 				}
 				if (columnName.equals("updateid") || columnName.equals("updatename") || columnName.equals("updatepgm")
-					|| columnName.equals("upd_id") || columnName.equals("upd_nm") || columnName.equals("upd_pgm")) {
+						|| columnName.equals("upd_id") || columnName.equals("upd_nm") || columnName.equals("upd_pgm")) {
 					buf.append(" insert=\"none\"");
 				}
 				// 입력일, 수정일에 대한 별도 처리
@@ -230,16 +230,16 @@ public class CodegenMySQL {
 		Statement stmt = null;
 		try {
 			StringBuffer query = new StringBuffer();
-			query.append("select col.column_name  ");
+			query.append("select cons.column_name  ");
 			query.append("from information_schema.columns cons ");
-			query.append("    inner join information_schema.key_column_usage col on cons.column_name = col.column_name ");
 			query.append("where cons.column_key = 'PRI' ");
-			query.append("    and col.table_name = '" + tableName + "' ");
-			query.append("order by col.ordinal_position ");
+			query.append("    and cons.table_schema = database() ");
+			query.append("    and cons.table_name = '" + tableName + "' ");
+			query.append("order by cons.ordinal_position ");
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query.toString());
 			while (rs.next()) {
-				pkList.add(rs.getString("COLUMN_NAME"));
+				pkList.add(rs.getString(1));
 			}
 		} finally {
 			if (rs != null) {
