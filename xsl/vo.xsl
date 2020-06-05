@@ -26,11 +26,12 @@ public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO impl
 	<xsl:if test="@auto_increment">
 	@GeneratedValue(strategy = GenerationType.IDENTITY)</xsl:if>
 	@Id
-	private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;
+	@Column(name = "<xsl:value-of select='@name'/>")
+	private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:call-template name="CamelCase"><xsl:with-param name="text" select="@name" /></xsl:call-template>;
 </xsl:for-each>
 <xsl:for-each select="columns/column[not(@primarykey)]">
-	@Column<xsl:if test="@insert='none'">(insertable = false)</xsl:if><xsl:if test="@update='none'">(updatable = false)</xsl:if>
-	private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;
+	@Column(name = "<xsl:value-of select='@name'/>"<xsl:if test="@insert='none'">, insertable = false</xsl:if><xsl:if test="@update='none'">, updatable = false</xsl:if>)
+	private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:call-template name="CamelCase"><xsl:with-param name="text" select="@name" /></xsl:call-template>;
 </xsl:for-each>
 
 <xsl:if test='count(columns/column[@primarykey])>1'>
@@ -39,7 +40,7 @@ public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO impl
 	@EqualsAndHashCode
 	@ToString
 	public static class PK implements Serializable {<xsl:for-each select="columns/column[@primarykey]">
-		private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:value-of select='@name'/>;</xsl:for-each>	
+		private <xsl:value-of select='@type'/><xsl:text> </xsl:text><xsl:call-template name="CamelCase"><xsl:with-param name="text" select="@name" /></xsl:call-template>;</xsl:for-each>	
 	}</xsl:if>
 	
 	//=================================
@@ -61,12 +62,33 @@ public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO impl
 <xsl:if test='count(columns/column[@primarykey])=1'>
 	@Override
 	public <xsl:value-of select='columns/column[@primarykey]/@type'/> getId() {
-		return <xsl:value-of select='columns/column[@primarykey]/@name'/>;
+		return <xsl:call-template name="CamelCase"><xsl:with-param name="text" select="columns/column[@primarykey]/@name" /></xsl:call-template>;
 	}</xsl:if>
 <xsl:if test='count(columns/column[@primarykey])>1'>
 	@Override
 	public PK getId() {
-		return new PK(<xsl:for-each select="columns/column[@primarykey]"><xsl:if test='position()!=1'>, </xsl:if><xsl:value-of select='@name'/></xsl:for-each>);
+		return new PK(<xsl:for-each select="columns/column[@primarykey]"><xsl:if test='position()!=1'>, </xsl:if><xsl:call-template name="CamelCase"><xsl:with-param name="text" select="@name" /></xsl:call-template></xsl:for-each>);
 	}</xsl:if>
 }</xsl:template>
+<xsl:template name="CamelCase">
+	<xsl:param name="text" />
+	<xsl:param name="lastletter" select="' '"/>
+	<xsl:if test="$text">
+		<xsl:variable name="thisletter" select="substring($text,1,1)"/>
+		<xsl:choose>
+			<xsl:when test="$lastletter='_'">
+				<xsl:value-of select="translate($thisletter, $vLower, $vUpper)"/>
+			</xsl:when>
+			<xsl:when test="$thisletter='_'">
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$thisletter"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:call-template name="CamelCase">
+			<xsl:with-param name="text" select="substring($text,2)"/>
+			<xsl:with-param name="lastletter" select="$thisletter"/>
+		</xsl:call-template>
+	</xsl:if>
+</xsl:template>
 </xsl:stylesheet>
