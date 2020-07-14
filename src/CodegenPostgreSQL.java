@@ -97,7 +97,7 @@ public class CodegenPostgreSQL {
 			System.out.println("JDBC Driver 로딩...");
 			System.out.println("=== 전체 테이블 목록에서 파일 생성 START ===");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select table_name from information_schema.tables where table_schema not in ('pg_catalog', 'information_schema') order by 1");
+			rs = stmt.executeQuery("select table_name from information_schema.tables where table_schema = 'public' order by 1");
 			while (rs.next()) {
 				Statement stmt2 = null;
 				ResultSet rs2 = null;
