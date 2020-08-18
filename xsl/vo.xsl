@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.*;
 import java.util.*;
 import javax.persistence.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.Persistable;
 import lombok.*;
@@ -18,6 +19,7 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
+@DynamicInsert
 @DynamicUpdate
 @Table(name = "<xsl:value-of select='@name'/>")
 public class <xsl:value-of select='translate(@class, $vLower, $vUpper)'/>VO implements Persistable&lt;<xsl:if test='count(columns/column[@primarykey])=1'><xsl:value-of select='columns/column[@primarykey]/@type'/></xsl:if>
